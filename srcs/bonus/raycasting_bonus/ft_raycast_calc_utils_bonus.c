@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_raycast_calc_utils.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/13 13:10:00 by aghergut          #+#    #+#             */
-/*   Updated: 2026/03/13 15:57:56 by aghergut         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/bonus/cub3d_bonus.h"
 
 static void	ft_set_ray_steps(t_ray *ray, t_game *game)

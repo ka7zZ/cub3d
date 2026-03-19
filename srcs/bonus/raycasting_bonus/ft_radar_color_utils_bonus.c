@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_radar_color_utils.c                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/13 00:00:00 by aghergut          #+#    #+#             */
-/*   Updated: 2026/03/13 19:14:24 by aghergut         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/bonus/cub3d_bonus.h"
 
 int	ft_blend_color(int bg_color, int fg_color, double alpha)

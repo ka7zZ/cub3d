@@ -1,22 +1,8 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_parse_map_validate_bonus.c                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/17 00:00:00 by aghergut          #+#    #+#             */
-/*   Updated: 2026/03/17 15:17:01 by aghergut         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/bonus/cub3d_bonus.h"
 
 static int	ft_is_valid_map_char(char c)
 {
-	if (ft_strchr(" 01NSEW", c))
-		return (1);
-	if (c == 'D')
+	if (ft_strchr(" 01NSEWD", c))
 		return (1);
 	return (0);
 }

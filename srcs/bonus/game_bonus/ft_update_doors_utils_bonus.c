@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_update_doors_utils.c                            :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2026/03/13 00:00:00 by aghergut          #+#    #+#             */
-/*   Updated: 2026/03/17 11:34:58 by aghergut         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/bonus/cub3d_bonus.h"
 
 static int	ft_player_on_door_cell(t_game *game, int door_idx)

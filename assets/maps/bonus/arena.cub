@@ -1,3 +1,11 @@
+NO ./assets/ingame/room/wall1dark.xpm
+SO ./assets/ingame/room/wall2dark.xpm
+WE ./assets/ingame/room/wall3dark.xpm
+EA ./assets/ingame/room/wall4dark.xpm
+
+F 70,70,80
+C 160,190,230
+
 11111111111111111111111111111111111111111
 10000000000000000000000000000000000000001
 10000000000000000000000000000000000000001

@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   ft_parse_map_bonus.c                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/20 00:00:00 by aghergut          #+#    #+#             */
-/*   Updated: 2026/03/17 15:17:01 by aghergut         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "../../../includes/bonus/cub3d_bonus.h"
 
 int	ft_parse_config_line(t_game *game, char *line);
@@ -45,5 +33,6 @@ int	ft_parse_map(t_game *game, char *filename)
 	game->original_map = ft_mapdup(game->map);
 	if (!game->original_map)
 		return (0);
+	ft_init_doors(game);
 	return (1);
 }
