@@ -7,6 +7,7 @@
 # include <X11/keysym.h>
 # include <limits.h>
 # include <math.h>
+# include <sys/time.h>
 
 # include "macros_bonus.h"
 # include "structs_bonus.h"

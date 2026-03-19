@@ -1,5 +1,4 @@
 #include "../../../includes/bonus/cub3d_bonus.h"
-#include <sys/time.h>
 
 static long long	ft_now_us(void)
 {

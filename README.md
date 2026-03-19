@@ -30,6 +30,9 @@ make re
 - MiniLibX documentation and source in `import/mlx`
 - Lode's Computer Graphics Tutorial (raycasting concepts)
 - Harm Smits 42 docs for MiniLibX/X11 events
+- We would like to extend our gratitude to the following creators for their excellent assets:
+    - **Wall Textures**: [gravendusk](https://gravendusk.itch.io/) - Thank you for the high-quality wall textures that      bring our environment to life.
+    - **Shotgun Asset**: [rekkimaru](https://rekkimaru.itch.io/) - Thank you for the detailed shotgun model used in our game.
 
 AI usage in this project:
 - Used to accelerate refactor planning and repetitive code transformations.
