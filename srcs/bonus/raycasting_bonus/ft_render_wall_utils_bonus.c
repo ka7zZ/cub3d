@@ -1,0 +1,53 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_render_wall_utils.c                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aghergut <aghergut@student.42madrid.com    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/03/13 00:00:00 by aghergut          #+#    #+#             */
+/*   Updated: 2026/03/16 15:21:12 by aghergut         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "../../../includes/bonus/cub3d_bonus.h"
+
+static void	ft_draw_wall_pixels(t_game *g, t_ray *r, t_texture *tex, int x)
+{
+	double	step;
+	double	pos;
+	int		y;
+	int		tex_y;
+	int		color;
+
+	step = 1.0 * tex->height / r->line_height;
+	pos = (r->draw_start - g->win_height / 2 - g->player.pitch
+			+ r->line_height / 2) * step;
+	y = r->draw_start;
+	while (y < r->draw_end)
+	{
+		tex_y = ((int)pos) & (tex->height - 1);
+		color = ft_get_texture_color(tex, r->tex_x, tex_y);
+		if (g->map[r->map_y][r->map_x] == 'D'
+			&& (color & 0xFF000000) == 0xFF000000)
+			color = -1;
+		if (color != -1 && r->side == 1)
+			color = (color >> 1) & 8355711;
+		if (color != -1)
+			ft_put_pixel(&g->frame, x, y, color);
+		pos += step;
+		y++;
+	}
+}
+
+void	ft_draw_wall_column(t_game *game, t_ray *ray, int x)
+{
+	t_texture	*tex;
+
+	tex = ft_select_texture(game, ray);
+	ray->tex_x = (int)(ray->wall_x * (double)tex->width);
+	if ((ray->side == 0 && ray->dir_x > 0)
+		|| (ray->side == 1 && ray->dir_y < 0))
+		ray->tex_x = tex->width - ray->tex_x - 1;
+	ft_draw_wall_pixels(game, ray, tex, x);
+}
