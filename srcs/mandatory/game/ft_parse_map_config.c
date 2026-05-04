@@ -1,5 +1,19 @@
 #include "../../../includes/mandatory/cub3d.h"
 
+static bool	ft_checkstr(char *str) 
+{
+	int	idx;
+
+	idx = 0;
+	while (str[idx])
+	{
+		if (!ft_isdigit(str[idx]))
+			return (false);
+		idx++;
+	}
+	return (true);
+}
+
 static int	ft_parse_rgb(char *s, int *color)
 {
 	char	**parts;
@@ -12,6 +26,8 @@ static int	ft_parse_rgb(char *s, int *color)
 	i = 0;
 	while (parts[i] && i < 3)
 	{
+		if (!ft_checkstr(parts[i]))
+			return (ft_mapfree(&parts), 0);
 		rgb[i] = ft_atoi(parts[i]);
 		if (rgb[i] < 0 || rgb[i] > 255)
 			return (ft_mapfree(&parts), 0);

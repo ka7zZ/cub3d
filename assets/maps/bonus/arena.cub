@@ -1,7 +1,7 @@
 NO ./assets/ingame/room/wall1dark.xpm
 SO ./assets/ingame/room/wall2dark.xpm
 WE ./assets/ingame/room/wall3dark.xpm
-EA ./assets/ingame/room/wall4dark.xpm
+EA ./assets/ingame/room/wall5lightsoff.xpm
 
 F 70,70,80
 C 160,190,230
