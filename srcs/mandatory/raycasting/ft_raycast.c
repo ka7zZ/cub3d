@@ -28,28 +28,33 @@ void	ft_perform_dda(t_ray *ray, t_game *game)
 // COPY COLUMN TO ADJACENT COLUMN FOR PERFORMANCE MODE - UNROLLED
 static void	ft_copy_column(t_game *game, int from_x, int to_x)
 {
-	int		y;
-	char	*src_base;
-	char	*dst_base;
-	int		offset;
+	char	*base;
+	int		off_from;
+	int		off_to;
 	int		stride;
+	int		y;
 
-	offset = game->graphics.frame.bpp / 8;
-	stride = game->graphics.frame.line_len;
-	src_base = game->graphics.frame.addr + from_x * offset;
-	dst_base = game->graphics.frame.addr + to_x * offset;
+	base = G_FRAME(game)->addr;
+	stride = G_FRAME(game)->line_len;
+	off_from = from_x * (G_FRAME(game)->bpp / 8);
+	off_to = to_x * (G_FRAME(game)->bpp / 8);
 	y = 0;
-	while (y < game->graphics.win_height - 3)
+	while (y < G_HEIGHT(game) - 3)
 	{
-		*(unsigned int *)(dst_base + y * stride) = *(unsigned int *)(src_base + y * stride);
-		*(unsigned int *)(dst_base + (y + 1) * stride) = *(unsigned int *)(src_base + (y + 1) * stride);
-		*(unsigned int *)(dst_base + (y + 2) * stride) = *(unsigned int *)(src_base + (y + 2) * stride);
-		*(unsigned int *)(dst_base + (y + 3) * stride) = *(unsigned int *)(src_base + (y + 3) * stride);
+		*(unsigned int *)(base + y * stride + off_to) = \
+			*(unsigned int *)(base + y * stride + off_from);
+		*(unsigned int *)(base + (y + 1) * stride + off_to) = \
+			*(unsigned int *)(base + (y + 1) * stride + off_from);
+		*(unsigned int *)(base + (y + 2) * stride + off_to) = \
+			*(unsigned int *)(base + (y + 2) * stride + off_from);
+		*(unsigned int *)(base + (y + 3) * stride + off_to) = \
+			*(unsigned int *)(base + (y + 3) * stride + off_from);
 		y += 4;
 	}
-	while (y < game->graphics.win_height)
+	while (y < G_HEIGHT(game))
 	{
-		*(unsigned int *)(dst_base + y * stride) = *(unsigned int *)(src_base + y * stride);
+		*(unsigned int *)(base + y * stride + off_to) = \
+			*(unsigned int *)(base + y * stride + off_from);
 		y++;
 	}
 }
@@ -59,40 +64,36 @@ void	ft_raycast_frame(t_game *game)
 {
 	t_ray	ray;
 	int		x;
-	int		win_width;
 
-	win_width = game->graphics.win_width;
 	ft_draw_floor_ceiling_textured(game);
 	x = 0;
-	// PHASE 4: Unroll loop by 2 since RAYCAST_COLUMN_STEP=2 (process 2 rays per iteration)
-	while (x < win_width - 2)
+	while (x < G_WIDTH(game) - 2)
 	{
 		ft_init_ray(&ray, game, x);
 		ft_perform_dda(&ray, game);
 		ft_calculate_wall_height(&ray, game);
 		ft_draw_wall_column(game, &ray, x);
-		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < win_width)
+		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < G_WIDTH(game))
 			ft_copy_column(game, x, x + 1);
 		x += RAYCAST_COLUMN_STEP;
-		if (x < win_width)
+		if (x < G_WIDTH(game))
 		{
 			ft_init_ray(&ray, game, x);
 			ft_perform_dda(&ray, game);
 			ft_calculate_wall_height(&ray, game);
 			ft_draw_wall_column(game, &ray, x);
-			if (RAYCAST_COLUMN_STEP == 2 && x + 1 < win_width)
+			if (RAYCAST_COLUMN_STEP == 2 && x + 1 < G_WIDTH(game))
 				ft_copy_column(game, x, x + 1);
 			x += RAYCAST_COLUMN_STEP;
 		}
 	}
-	// Cleanup remaining rays
-	while (x < win_width)
+	while (x < G_WIDTH(game))
 	{
 		ft_init_ray(&ray, game, x);
 		ft_perform_dda(&ray, game);
 		ft_calculate_wall_height(&ray, game);
 		ft_draw_wall_column(game, &ray, x);
-		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < win_width)
+		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < G_WIDTH(game))
 			ft_copy_column(game, x, x + 1);
 		x += RAYCAST_COLUMN_STEP;
 	}

@@ -30,29 +30,24 @@ static void	ft_set_ray_steps(t_ray *ray, t_game *game)
 
 void	ft_init_ray(t_ray *ray, t_game *game, int x)
 {
-	double	inv_dir_x;
-	double	inv_dir_y;
-
-	// PHASE 4: Strength reduction - pre-compute 2 / win_width instead of repeated division
-	ray->camera_x = x * (2.0 / game->graphics.win_width) - 1;
+	ray->camera_x = x * (2.0 / G_WIDTH(game)) - 1;
 	ray->dir_x = game->player.dir_x + game->player.plane_x * ray->camera_x;
 	ray->dir_y = game->player.dir_y + game->player.plane_y * ray->camera_x;
 	ray->map_x = (int)game->player.pos_x;
 	ray->map_y = (int)game->player.pos_y;
-	// PHASE 4: Strength reduction - compute reciprocal once instead of division in fabs()
 	if (ray->dir_x == 0)
 		ray->delta_dist_x = 1e30;
 	else
 	{
-		inv_dir_x = 1.0 / ray->dir_x;
-		ray->delta_dist_x = inv_dir_x < 0 ? -inv_dir_x : inv_dir_x;
+		ray->delta_dist_x = 1.0 / ray->dir_x;
+		ray->delta_dist_x = ray->delta_dist_x < 0 ? -ray->delta_dist_x : ray->delta_dist_x;
 	}
 	if (ray->dir_y == 0)
 		ray->delta_dist_y = 1e30;
 	else
 	{
-		inv_dir_y = 1.0 / ray->dir_y;
-		ray->delta_dist_y = inv_dir_y < 0 ? -inv_dir_y : inv_dir_y;
+		ray->delta_dist_y = 1.0 / ray->dir_y;
+		ray->delta_dist_y = ray->delta_dist_y < 0 ? -ray->delta_dist_y : ray->delta_dist_y;
 	}
 	ray->hit = 0;
 	ft_set_ray_steps(ray, game);

@@ -1,72 +1,36 @@
 #include "../../../includes/mandatory/cub3d.h"
 
-static void	ft_fill_line_fast_unrolled(t_image *img, int y, int width, int color)
+void	ft_draw_floor_ceiling_textured(t_game *g)
 {
-	int		x;
-	char	*base;
+	char	*addr;
 	int		stride;
-	int		pixel_size;
-
-	pixel_size = img->bpp / 8;
-	stride = img->line_len;
-	base = img->addr + (y * stride);
-	x = 0;
-	while (x < width - 3)
-	{
-		*(unsigned int *)(base + x * pixel_size) = color;
-		*(unsigned int *)(base + (x + 1) * pixel_size) = color;
-		*(unsigned int *)(base + (x + 2) * pixel_size) = color;
-		*(unsigned int *)(base + (x + 3) * pixel_size) = color;
-		x += 4;
-	}
-	while (x < width)
-	{
-		*(unsigned int *)(base + x * pixel_size) = color;
-		x++;
-	}
-}
-
-void	ft_draw_floor_ceiling_textured(t_game *game)
-{
-	int		horizon;
+	int		ps;
 	int		y;
-	int		win_width;
-	int		win_height;
-	int		ceiling_color;
-	int		floor_color;
+	int		x;
+	int		w;
+	int		mid;
+	int		c;
 
-	win_width = game->graphics.win_width;
-	win_height = game->graphics.win_height;
-	ceiling_color = game->render.ceiling_color;
-	floor_color = game->render.floor_color;
-	horizon = win_height / 2;
-	if (horizon < 0)
-		horizon = 0;
-	if (horizon > win_height)
-		horizon = win_height;
+	addr = G_FRAME(g)->addr;
+	stride = G_FRAME(g)->line_len;
+	ps = G_FRAME(g)->bpp / 8;
+	w = G_WIDTH(g);
+	mid = G_HEIGHT(g) / 2;
 	y = 0;
-	while (y < horizon - 3)
+	while (y < G_HEIGHT(g))
 	{
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y, win_width, ceiling_color);
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y + 1, win_width, ceiling_color);
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y + 2, win_width, ceiling_color);
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y + 3, win_width, ceiling_color);
-		y += 4;
-	}
-	while (y < horizon)
-	{
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y++, win_width, ceiling_color);
-	}
-	while (y < win_height - 3)
-	{
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y, win_width, floor_color);
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y + 1, win_width, floor_color);
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y + 2, win_width, floor_color);
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y + 3, win_width, floor_color);
-		y += 4;
-	}
-	while (y < win_height)
-	{
-		ft_fill_line_fast_unrolled(&game->graphics.frame, y++, win_width, floor_color);
+		c = (y < mid) ? G_CEIL_C(g) : G_FLOOR_C(g);
+		x = 0;
+		while (x < w - 3)
+		{
+			*(unsigned int *)(addr + y * stride + x * ps) = c;
+			*(unsigned int *)(addr + y * stride + (x + 1) * ps) = c;
+			*(unsigned int *)(addr + y * stride + (x + 2) * ps) = c;
+			*(unsigned int *)(addr + y * stride + (x + 3) * ps) = c;
+			x += 4;
+		}
+		while (x < w)
+			*(unsigned int *)(addr + y * stride + x++ * ps) = c;
+		y++;
 	}
 }

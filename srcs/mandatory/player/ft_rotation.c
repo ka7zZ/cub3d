@@ -1,23 +1,25 @@
 #include "../../../includes/mandatory/cub3d.h"
 
-static void	ft_rotate_player_fast(t_game *game, double cos_rot, double sin_rot)
+static void	ft_rotate_by_angle(t_game *g, double angle)
 {
-	double	old_dir_x;
-	double	old_plane_x;
+	double	c;
+	double	s;
+	double	old_dx;
+	double	old_px;
 
-	old_dir_x = game->player.dir_x;
-	old_plane_x = game->player.plane_x;
-	game->player.dir_x = old_dir_x * cos_rot - game->player.dir_y * sin_rot;
-	game->player.dir_y = old_dir_x * sin_rot + game->player.dir_y * cos_rot;
-	game->player.plane_x = old_plane_x * cos_rot - game->player.plane_y * sin_rot;
-	game->player.plane_y = old_plane_x * sin_rot + game->player.plane_y * cos_rot;
+	c = cos(angle);
+	s = sin(angle);
+	old_dx = g->player.dir_x;
+	old_px = g->player.plane_x;
+	g->player.dir_x = old_dx * c - g->player.dir_y * s;
+	g->player.dir_y = old_dx * s + g->player.dir_y * c;
+	g->player.plane_x = old_px * c - g->player.plane_y * s;
+	g->player.plane_y = old_px * s + g->player.plane_y * c;
 }
 
 void	ft_update_player(t_game *game)
 {
 	double	rot_step;
-	double	cos_rot;
-	double	sin_rot;
 
 	if (game->input.key_w)
 		ft_move_forward(game);
@@ -29,15 +31,7 @@ void	ft_update_player(t_game *game)
 		ft_move_right(game);
 	rot_step = ROT_SPEED * game->timing.delta_time;
 	if (game->input.key_left)
-	{
-		cos_rot = cos(rot_step);
-		sin_rot = sin(rot_step);
-		ft_rotate_player_fast(game, cos_rot, sin_rot);
-	}
+		ft_rotate_by_angle(game, rot_step);
 	if (game->input.key_right)
-	{
-		cos_rot = cos(-rot_step);
-		sin_rot = sin(-rot_step);
-		ft_rotate_player_fast(game, cos_rot, sin_rot);
-	}
+		ft_rotate_by_angle(game, -rot_step);
 }
