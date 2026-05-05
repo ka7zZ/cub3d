@@ -32,7 +32,7 @@ typedef struct s_player
 	double	dir_y;
 	double	plane_x;
 	double	plane_y;
-	int		moves;
+
 }	t_player;
 
 typedef struct s_texture
@@ -78,40 +78,73 @@ typedef struct s_image
 	int		endian;
 }	t_image;
 
-typedef struct s_game
+// Graphics/Window System
+typedef struct s_mlx_context
 {
-	void		*mlx;
-	void		*win;
-	int			win_width;
-	int			win_height;
-	t_image		frame;
-	t_player	player;
+	void	*mlx;
+	void	*win;
+	int		win_width;
+	int		win_height;
+	t_image	frame;
+}	t_mlx_context;
+
+// World Geometry
+typedef struct s_map_data
+{
+	char	**map;
+	int		map_width;
+	int		map_height;
+}	t_map_data;
+
+// Texture Assets
+typedef struct s_assets
+{
 	t_texture	tex_wall[4];
 	t_texture	tex_weapon;
-	char		**original_map;
-	char		**map;
-	int			map_width;
-	int			map_height;
-	double		*z_buffer;
-	int			game_won;
-	int			game_over;
-	int			frame_count;
-	int			key_w;
-	int			key_s;
-	int			key_a;
-	int			key_d;
-	int			key_left;
-	int			key_right;
-	double		delta_time;
-	long long	last_frame_us;
-	int			floor_color;
-	int			ceiling_color;
-	int			has_floor_color;
-	int			has_ceiling_color;
 	char		*tex_no_path;
 	char		*tex_so_path;
 	char		*tex_we_path;
 	char		*tex_ea_path;
+}	t_assets;
+
+// Input Management
+typedef struct s_input
+{
+	int	key_w;
+	int	key_s;
+	int	key_a;
+	int	key_d;
+	int	key_left;
+	int	key_right;
+}	t_input;
+
+// Frame Timing
+typedef struct s_timing
+{
+	double		delta_time;
+	long long	last_frame_us;
+	int			frame_count;
+}	t_timing;
+
+// Rendering Configuration
+typedef struct s_render_config
+{
+	int	floor_color;
+	int	ceiling_color;
+	int	has_floor_color;
+	int	has_ceiling_color;
+}	t_render_config;
+
+// Main Game State (Refactored)
+typedef struct s_game
+{
+	t_mlx_context	graphics;
+	t_map_data		map;
+	t_assets		assets;
+	t_player		player;
+	t_input			input;
+	t_timing		timing;
+	t_render_config	render;
 }	t_game;
 
 #endif

@@ -72,11 +72,22 @@ int	ft_check_wall(t_game *game, double x, double y)
 
 int	ft_game_loop(t_game *game)
 {
+	long long	frame_start;
+
+	frame_start = ft_now_us();
+	
 	ft_update_delta_time(game);
 	game->frame_count++;
 	ft_update_doors(game);
 	ft_update_player(game);
 	ft_update_shotgun(game);
 	ft_raycast_frame(game);
+	
+	if (game->frame_count % 60 == 0)
+	{
+		ft_printf("[FRAME %d] Frame time: %.2fms\n",
+			game->frame_count,
+			(ft_now_us() - frame_start) / 1000.0);
+	}
 	return (0);
 }

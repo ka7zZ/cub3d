@@ -7,12 +7,12 @@ static void	ft_draw_crosshair_h(t_game *game, int cx, int cy)
 	i = 4;
 	while (i <= 14)
 	{
-		ft_put_pixel(&game->frame, cx + i, cy - 1, 0x000000);
-		ft_put_pixel(&game->frame, cx + i, cy + 1, 0x000000);
-		ft_put_pixel(&game->frame, cx - i, cy - 1, 0x000000);
-		ft_put_pixel(&game->frame, cx - i, cy + 1, 0x000000);
-		ft_put_pixel(&game->frame, cx + i, cy, 0xFFFFFF);
-		ft_put_pixel(&game->frame, cx - i, cy, 0xFFFFFF);
+		ft_put_pixel(&game->graphics.frame, cx + i, cy - 1, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx + i, cy + 1, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx - i, cy - 1, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx - i, cy + 1, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx + i, cy, 0xFFFFFF);
+		ft_put_pixel(&game->graphics.frame, cx - i, cy, 0xFFFFFF);
 		i++;
 	}
 }
@@ -24,12 +24,12 @@ static void	ft_draw_crosshair_v(t_game *game, int cx, int cy)
 	i = 4;
 	while (i <= 14)
 	{
-		ft_put_pixel(&game->frame, cx - 1, cy + i, 0x000000);
-		ft_put_pixel(&game->frame, cx + 1, cy + i, 0x000000);
-		ft_put_pixel(&game->frame, cx - 1, cy - i, 0x000000);
-		ft_put_pixel(&game->frame, cx + 1, cy - i, 0x000000);
-		ft_put_pixel(&game->frame, cx, cy + i, 0xFFFFFF);
-		ft_put_pixel(&game->frame, cx, cy - i, 0xFFFFFF);
+		ft_put_pixel(&game->graphics.frame, cx - 1, cy + i, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx + 1, cy + i, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx - 1, cy - i, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx + 1, cy - i, 0x000000);
+		ft_put_pixel(&game->graphics.frame, cx, cy + i, 0xFFFFFF);
+		ft_put_pixel(&game->graphics.frame, cx, cy - i, 0xFFFFFF);
 		i++;
 	}
 }
@@ -39,11 +39,11 @@ void	ft_draw_crosshair(t_game *game)
 	int	cx;
 	int	cy;
 
-	cx = game->win_width / 2;
-	cy = game->win_height / 2;
+	cx = game->graphics.win_width / 2;
+	cy = game->graphics.win_height / 2;
 	ft_draw_crosshair_h(game, cx, cy);
 	ft_draw_crosshair_v(game, cx, cy);
-	ft_put_pixel(&game->frame, cx, cy, 0xFFFFFF);
+	ft_put_pixel(&game->graphics.frame, cx, cy, 0xFFFFFF);
 }
 
 static void	ft_draw_weapon_row(t_game *game, t_texture *tex, int y)
@@ -60,8 +60,8 @@ static void	ft_draw_weapon_row(t_game *game, t_texture *tex, int y)
 		tex_y = (y * tex->height) / 300;
 		color = ft_get_texture_color(tex, tex_x, tex_y);
 		if ((color & 0xFF000000) != 0xFF000000)
-			ft_put_pixel(&game->frame, game->win_width / 2 - 200 + x + 80,
-				game->win_height - 300 + y, color);
+			ft_put_pixel(&game->graphics.frame, game->graphics.win_width / 2 - 200 + x + 80,
+				game->graphics.win_height - 300 + y, color);
 		x++;
 	}
 }
@@ -71,7 +71,7 @@ void	ft_draw_weapon_hud(t_game *game)
 	t_texture	*tex;
 	int			y;
 
-	tex = &game->tex_weapon;
+	tex = &game->assets.tex_weapon;
 	if (!tex->img)
 		return ;
 	y = 0;

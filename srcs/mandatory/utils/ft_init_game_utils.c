@@ -21,7 +21,7 @@ int	ft_init_stage_assets_world(t_game *game)
 // INIT RUNTIME FLAGS
 void	ft_init_stage_runtime(t_game *game)
 {
-	game->frame_count = 0;
-	game->delta_time = 0.016;
-	game->last_frame_us = 0;
+	game->timing.frame_count = 0;
+	game->timing.delta_time = 0.016;
+	game->timing.last_frame_us = 0;
 }

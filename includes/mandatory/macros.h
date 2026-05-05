@@ -15,7 +15,7 @@
 # define MAX_DELTA_TIME		0.080
 
 /* Raycast quality switch: 1 = max quality, 0 = performance */
-# define RAYCAST_MAX_QUALITY	1
+# define RAYCAST_MAX_QUALITY	0
 # if RAYCAST_MAX_QUALITY
 #  define RAYCAST_COLUMN_STEP	1
 # else

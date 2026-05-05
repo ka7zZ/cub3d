@@ -2,13 +2,13 @@
 
 static int	ft_load_dark_walls(t_game *g)
 {
-	if (!ft_load_texture(g, &g->tex_wall[0], g->tex_no_path))
+	if (!ft_load_texture(g, &g->assets.tex_wall[0], g->assets.tex_no_path))
 		return (0);
-	if (!ft_load_texture(g, &g->tex_wall[1], g->tex_so_path))
+	if (!ft_load_texture(g, &g->assets.tex_wall[1], g->assets.tex_so_path))
 		return (0);
-	if (!ft_load_texture(g, &g->tex_wall[2], g->tex_we_path))
+	if (!ft_load_texture(g, &g->assets.tex_wall[2], g->assets.tex_we_path))
 		return (0);
-	if (!ft_load_texture(g, &g->tex_wall[3], g->tex_ea_path))
+	if (!ft_load_texture(g, &g->assets.tex_wall[3], g->assets.tex_ea_path))
 		return (0);
 	return (1);
 }

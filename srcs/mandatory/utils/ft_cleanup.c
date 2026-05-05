@@ -4,29 +4,23 @@ void	ft_free_game(t_game *game)
 {
 	if (!game)
 		return ;
-	if (game->frame.img && game->mlx)
-		mlx_destroy_image(game->mlx, game->frame.img);
-	if (game->mlx)
+	if (game->graphics.frame.img && game->graphics.mlx)
+		mlx_destroy_image(game->graphics.mlx, game->graphics.frame.img);
+	if (game->graphics.mlx)
 		ft_free_textures(game);
-	if (game->z_buffer)
+	if (game->graphics.win && game->graphics.mlx)
+		mlx_destroy_window(game->graphics.mlx, game->graphics.win);
+	if (game->graphics.mlx)
 	{
-		free(game->z_buffer);
-		game->z_buffer = NULL;
+		mlx_destroy_display(game->graphics.mlx);
+		free(game->graphics.mlx);
+		game->graphics.mlx = NULL;
 	}
-	if (game->win && game->mlx)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-		game->mlx = NULL;
-	}
-	ft_mapfree(&game->map);
-	ft_mapfree(&game->original_map);
-	free(game->tex_no_path);
-	free(game->tex_so_path);
-	free(game->tex_we_path);
-	free(game->tex_ea_path);
+	ft_mapfree(&game->map.map);
+	free(game->assets.tex_no_path);
+	free(game->assets.tex_so_path);
+	free(game->assets.tex_we_path);
+	free(game->assets.tex_ea_path);
 }
 
 void	ft_exit_error(t_game *game, char *msg)

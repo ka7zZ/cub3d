@@ -27,10 +27,10 @@ static char	*ft_resolve_map_path(char *input)
 
 static void	ft_set_hooks(t_game *game)
 {
-	mlx_loop_hook(game->mlx, ft_game_loop, game);
-	mlx_hook(game->win, KeyPress, KeyPressMask, ft_key_press, game);
-	mlx_hook(game->win, KeyRelease, KeyReleaseMask, ft_key_release, game);
-	mlx_hook(game->win, DestroyNotify, NoEventMask, ft_close_game, game);
+	mlx_loop_hook(game->graphics.mlx, ft_game_loop, game);
+	mlx_hook(game->graphics.win, KeyPress, KeyPressMask, ft_key_press, game);
+	mlx_hook(game->graphics.win, KeyRelease, KeyReleaseMask, ft_key_release, game);
+	mlx_hook(game->graphics.win, DestroyNotify, NoEventMask, ft_close_game, game);
 }
 
 int	main(int argc, char **argv)
@@ -57,6 +57,6 @@ int	main(int argc, char **argv)
 	}
 	free(map_path);
 	ft_set_hooks(&game);
-	mlx_loop(game.mlx);
+	mlx_loop(game.graphics.mlx);
 	return (0);
 }

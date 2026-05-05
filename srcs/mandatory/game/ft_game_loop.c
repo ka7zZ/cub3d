@@ -8,47 +8,51 @@ static long long	ft_now_us(void)
 	return ((long long)tv.tv_sec * 1000000LL + (long long)tv.tv_usec);
 }
 
-static void	ft_update_delta_time(t_game *game)
+static int	ft_update_delta_time(t_game *game)
 {
 	long long	now;
 
 	now = ft_now_us();
-	if (game->last_frame_us == 0)
-		game->delta_time = 0.016;
+	if (game->timing.last_frame_us == 0)
+		game->timing.delta_time = 0.016;
 	else
-		game->delta_time = (double)(now - game->last_frame_us) / 1000000.0;
-	if (game->delta_time < MIN_DELTA_TIME)
-		game->delta_time = MIN_DELTA_TIME;
-	if (game->delta_time > MAX_DELTA_TIME)
-		game->delta_time = MAX_DELTA_TIME;
-	game->last_frame_us = now;
-}
-
-static int	ft_cell_blocks_player(t_game *game, int map_x, int map_y)
-{
-	if (map_x < 0 || map_x >= game->map_width
-		|| map_y < 0 || map_y >= game->map_height)
-		return (1);
-	if (game->map[map_y][map_x] == '1')
-		return (1);
+		game->timing.delta_time = (double)(now - game->timing.last_frame_us) / 1000000.0;
+	if (game->timing.delta_time < MIN_DELTA_TIME)
+		game->timing.delta_time = MIN_DELTA_TIME;
+	if (game->timing.delta_time > MAX_DELTA_TIME)
+		game->timing.delta_time = MAX_DELTA_TIME;
+	game->timing.last_frame_us = now;
 	return (0);
 }
 
 int	ft_check_wall(t_game *game, double x, double y)
 {
-	int	ix;
-	int	iy;
-	int	m[2];
+	int		ix;
+	int		iy;
+	int		m[2];
+	int		map_w;
+	int		map_h;
+	char	**map;
 
+	map_w = game->map.map_width;
+	map_h = game->map.map_height;
+	map = game->map.map;
 	iy = -1;
 	while (iy <= 1)
 	{
 		ix = -1;
 		while (ix <= 1)
 		{
+			if (ix == 0 && iy == 0)
+			{
+				ix++;
+				continue ;
+			}
 			m[0] = (int)(x + ix * PLAYER_RADIUS);
 			m[1] = (int)(y + iy * PLAYER_RADIUS);
-			if (ft_cell_blocks_player(game, m[0], m[1]))
+			if (m[0] < 0 || m[0] >= map_w || m[1] < 0 || m[1] >= map_h)
+				return (1);
+			if (map[m[1]][m[0]] == '1')
 				return (1);
 			ix++;
 		}
@@ -59,9 +63,34 @@ int	ft_check_wall(t_game *game, double x, double y)
 
 int	ft_game_loop(t_game *game)
 {
+	long long	frame_start;
+	long long	delta_calc_time;
+	long long	player_update_time;
+	long long	raycast_time;
+	long long	total_time;
+
+	frame_start = ft_now_us();
+	
 	ft_update_delta_time(game);
-	game->frame_count++;
+	delta_calc_time = ft_now_us() - frame_start;
+	
+	game->timing.frame_count++;
 	ft_update_player(game);
+	player_update_time = ft_now_us() - frame_start - delta_calc_time;
+	
 	ft_raycast_frame(game);
+	raycast_time = ft_now_us() - frame_start - delta_calc_time - player_update_time;
+	
+	total_time = ft_now_us() - frame_start;
+	
+	if (game->timing.frame_count % 60 == 0)
+	{
+		ft_printf("[FRAME %d] Total: %.2fms | Delta: %.2fms | Player: %.2fms | Raycast: %.2fms\n",
+			game->timing.frame_count,
+			total_time / 1000.0,
+			delta_calc_time / 1000.0,
+			player_update_time / 1000.0,
+			raycast_time / 1000.0);
+	}
 	return (0);
 }

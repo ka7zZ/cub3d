@@ -66,14 +66,42 @@ static void	ft_draw_columns(t_game *game)
 	t_ray	ray;
 	t_ray	ray_copy;
 	int		x;
+	int		win_width;
 
+	win_width = game->win_width;
 	x = 0;
-	while (x < game->win_width)
+	// PHASE 4: Unroll loop by 2 since RAYCAST_COLUMN_STEP=2 (process 2 rays per iteration)
+	while (x < win_width - 2)
 	{
 		ft_init_ray(&ray, game, x);
 		ft_perform_dda(&ray, game);
 		ft_draw_column(game, &ray, x);
-		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < game->win_width)
+		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < win_width)
+		{
+			ray_copy = ray;
+			ft_draw_column(game, &ray_copy, x + 1);
+		}
+		x += RAYCAST_COLUMN_STEP;
+		if (x < win_width)
+		{
+			ft_init_ray(&ray, game, x);
+			ft_perform_dda(&ray, game);
+			ft_draw_column(game, &ray, x);
+			if (RAYCAST_COLUMN_STEP == 2 && x + 1 < win_width)
+			{
+				ray_copy = ray;
+				ft_draw_column(game, &ray_copy, x + 1);
+			}
+			x += RAYCAST_COLUMN_STEP;
+		}
+	}
+	// Cleanup remaining rays
+	while (x < win_width)
+	{
+		ft_init_ray(&ray, game, x);
+		ft_perform_dda(&ray, game);
+		ft_draw_column(game, &ray, x);
+		if (RAYCAST_COLUMN_STEP == 2 && x + 1 < win_width)
 		{
 			ray_copy = ray;
 			ft_draw_column(game, &ray_copy, x + 1);

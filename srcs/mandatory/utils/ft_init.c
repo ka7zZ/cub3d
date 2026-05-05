@@ -5,25 +5,22 @@ void	ft_init_mlx(t_game *game)
 	int	screen_width;
 	int	screen_height;
 
-	game->mlx = mlx_init();
-	if (!game->mlx)
+	game->graphics.mlx = mlx_init();
+	if (!game->graphics.mlx)
 		ft_exit_error(game, "MLX initialization failed");
-	mlx_get_screen_size(game->mlx, &screen_width, &screen_height);
-	game->win_width = screen_width;
-	game->win_height = screen_height;
-	game->win = mlx_new_window(game->mlx, game->win_width,
-			game->win_height, "so_long 3D");
-	if (!game->win)
+	mlx_get_screen_size(game->graphics.mlx, &screen_width, &screen_height);
+	game->graphics.win_width = screen_width;
+	game->graphics.win_height = screen_height;
+	game->graphics.win = mlx_new_window(game->graphics.mlx, game->graphics.win_width,
+			game->graphics.win_height, "so_long 3D");
+	if (!game->graphics.win)
 		ft_exit_error(game, "Window creation failed");
-	game->frame.img = mlx_new_image(game->mlx,
-			game->win_width, game->win_height);
-	if (!game->frame.img)
+	game->graphics.frame.img = mlx_new_image(game->graphics.mlx,
+			game->graphics.win_width, game->graphics.win_height);
+	if (!game->graphics.frame.img)
 		ft_exit_error(game, "Image creation failed");
-	game->frame.addr = mlx_get_data_addr(game->frame.img,
-			&game->frame.bpp, &game->frame.line_len, &game->frame.endian);
-	game->z_buffer = (double *)malloc(sizeof(double) * game->win_width);
-	if (!game->z_buffer)
-		ft_exit_error(game, "Z-buffer allocation failed");
+	game->graphics.frame.addr = mlx_get_data_addr(game->graphics.frame.img,
+			&game->graphics.frame.bpp, &game->graphics.frame.line_len, &game->graphics.frame.endian);
 }
 
 int	ft_init_game(t_game *game, char *map_file)
